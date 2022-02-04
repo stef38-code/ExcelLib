@@ -18,7 +18,7 @@
         <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
         <!-- -->
         <lombok.version>1.18.22</lombok.version>
-        <apache.poi.version>5.0.0</apache.poi.version>
+        <apache.poi.version>4.1.2</apache.poi.version>
         <assertj.version>3.18.1</assertj.version>
         <mockito.version>3.12.4</mockito.version>
         <junit-jupiter.version>5.8.2</junit-jupiter.version>

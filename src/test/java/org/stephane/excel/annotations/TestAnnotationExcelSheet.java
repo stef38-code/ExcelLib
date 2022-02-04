@@ -3,52 +3,46 @@ package org.stephane.excel.annotations;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.stephane.excel.Personne;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import org.stephane.excel.entities.Personne;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
-public class TestAnnotationExcelSheet {
-    private AnalyseExcelAnnotationInClass analyseExcelAnnotationInClass;
+class TestAnnotationExcelSheet {
+    private ExcelAnnotationInClass excelAnnotationInClass;
 
     @BeforeEach
     void setUp() {
-        analyseExcelAnnotationInClass = new AnalyseExcelAnnotationInClass();
+        excelAnnotationInClass = new ExcelAnnotationInClass();
     }
 
     @Test
-    void isExcelSheetAnnotationPresent_Class_ExcelSheet() throws NoSuchFieldException {
-        then(analyseExcelAnnotationInClass.isExcelSheetAnnotationPresent(Personne.class)).isTrue();
-        then(analyseExcelAnnotationInClass.isExcelSheetAnnotationPresent(First.class)).isTrue();
-        then(analyseExcelAnnotationInClass.isExcelSheetAnnotationPresent(Second.class)).isTrue();
-        then(analyseExcelAnnotationInClass.isExcelSheetAnnotationPresent(Third.class)).isTrue();
-        then(analyseExcelAnnotationInClass.isExcelSheetAnnotationPresent(Fourth.class)).isTrue();
-        then(analyseExcelAnnotationInClass.isExcelSheetAnnotationPresent(Fifth.class)).isFalse();
+    void isExcelSheetAnnotationPresent_Class_ExcelSheet() {
+        then(excelAnnotationInClass.isExcelSheetAnnotationPresent(Personne.class)).isTrue();
+        then(excelAnnotationInClass.isExcelSheetAnnotationPresent(First.class)).isTrue();
+        then(excelAnnotationInClass.isExcelSheetAnnotationPresent(Second.class)).isTrue();
+        then(excelAnnotationInClass.isExcelSheetAnnotationPresent(Third.class)).isTrue();
+        then(excelAnnotationInClass.isExcelSheetAnnotationPresent(Fourth.class)).isTrue();
+        then(excelAnnotationInClass.isExcelSheetAnnotationPresent(Fifth.class)).isFalse();
     }
 
     @Test
-    void getExcelSheetAnnotationValue_ExcelSheetAnnotation() throws NoSuchFieldException {
-        ExcelSheet ExcelSheetPersonne = analyseExcelAnnotationInClass.getExcelSheetAnnotationValue(Personne.class);
+    void getExcelSheetAnnotationValue_ExcelSheetAnnotation() {
+        ExcelSheet ExcelSheetPersonne = excelAnnotationInClass.getExcelSheetAnnotationValue(Personne.class);
         thenExcelSheet(ExcelSheetPersonne, 1, StringUtils.EMPTY);
-        ExcelSheet ExcelSheetFirst = analyseExcelAnnotationInClass.getExcelSheetAnnotationValue(First.class);
+        ExcelSheet ExcelSheetFirst = excelAnnotationInClass.getExcelSheetAnnotationValue(First.class);
         thenExcelSheet(ExcelSheetFirst, 1, StringUtils.EMPTY);
 
-        ExcelSheet ExcelSheetSecond = analyseExcelAnnotationInClass.getExcelSheetAnnotationValue(Second.class);
+        ExcelSheet ExcelSheetSecond = excelAnnotationInClass.getExcelSheetAnnotationValue(Second.class);
         thenExcelSheet(ExcelSheetSecond, 2, StringUtils.EMPTY);
 
 
-        ExcelSheet ExcelSheetThird = analyseExcelAnnotationInClass.getExcelSheetAnnotationValue(Third.class);
+        ExcelSheet ExcelSheetThird = excelAnnotationInClass.getExcelSheetAnnotationValue(Third.class);
         thenExcelSheet(ExcelSheetThird, 1, "Feuil1");
 
-        ExcelSheet ExcelSheetFourth = analyseExcelAnnotationInClass.getExcelSheetAnnotationValue(Fourth.class);
+        ExcelSheet ExcelSheetFourth = excelAnnotationInClass.getExcelSheetAnnotationValue(Fourth.class);
         thenExcelSheet(ExcelSheetFourth, 3, "Feuil1");
 
-        ExcelSheet ExcelSheetFifth = analyseExcelAnnotationInClass.getExcelSheetAnnotationValue(Fifth.class);
+        ExcelSheet ExcelSheetFifth = excelAnnotationInClass.getExcelSheetAnnotationValue(Fifth.class);
         then(ExcelSheetFifth).isNull();
     }
 
@@ -59,36 +53,28 @@ public class TestAnnotationExcelSheet {
     }
 
 
-    private class AnalyseExcelAnnotationInClass extends org.stephane.excel.annotations.AnalyseExcelAnnotationInClass {
-        private <T, A extends Annotation> List<Field> getFieldContainAnnotation(Class<T> tClass, Class<A> aClass) {
-            return Stream.of(tClass.getDeclaredFields())
-                    .filter(field -> field.getAnnotation(aClass) != null)
-                    .collect(Collectors.toList());
-        }
-    }
-
     @ExcelSheet
-    private class First {
-        private String name;
+    private static class First {
+
     }
 
     @ExcelSheet(number = 2)
-    private class Second {
-        private String name;
+    private static class Second {
+
     }
 
     @ExcelSheet(name = "Feuil1")
-    private class Third {
-        private String name;
+    private static class Third {
+
     }
 
     @ExcelSheet(number = 3, name = "Feuil1")
-    private class Fourth {
-        private String name;
+    private static class Fourth {
+
     }
 
     private class Fifth {
-        private String name;
+
     }
 
 }
