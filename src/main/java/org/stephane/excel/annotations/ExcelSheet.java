@@ -8,6 +8,6 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExcelSheet {
-    int number() default 1;
+    int number() default 0;
     String name() default StringUtils.EMPTY;
 }

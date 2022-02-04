@@ -20,7 +20,7 @@ class TestFichierExcelXls {
     }
 
     @Test
-    void readWorkBookXls_Lorsque_ouvertUnFichierExcelXls_Attend_workbookNonNull() throws IOException {
+    void readWorkBookXls_Lorsque_ouvertUnFichierExcelXls_Attend_workbookNonNull() throws  ExcelException {
         //Conditions préalables (given)
         excelFile.readXls(fExcel);
         //Une action se produit (when)
@@ -30,7 +30,7 @@ class TestFichierExcelXls {
     }
 
     @Test
-    void readWorkBookXls_Lorsque_UnFichierExcelAbsentXls_Attend_newWorkbook() throws IOException {
+    void readWorkBookXls_Lorsque_UnFichierExcelAbsentXls_Attend_newWorkbook() throws ExcelException {
         //Conditions préalables (given)
         excelFile.readXls("fichierAbsent.xls");
         //Une action se produit (when)

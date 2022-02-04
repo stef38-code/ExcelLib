@@ -1,11 +1,15 @@
 package org.stephane.excel.entities;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.stephane.excel.annotations.ExcelCell;
 import org.stephane.excel.annotations.ExcelDataHeader;
 import org.stephane.excel.annotations.ExcelSheet;
 
 @ExcelSheet
 @ExcelDataHeader
+@Getter
+@Setter
 public class Personne {
     @ExcelCell(number =1)
     private String name;

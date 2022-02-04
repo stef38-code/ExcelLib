@@ -10,11 +10,12 @@ public class AnalyseClass {
     @Getter
     EntityDefinition entityDefinition;
 
-    public <T> void check(Class<T> tClass) {
+    public <T> EntityDefinition check(Class<T> tClass) {
         entityDefinition = new EntityDefinition();
         checkExcelSheet(tClass);
         checkExcelDataHeader(tClass);
         checkExcelCell(tClass);
+        return getEntityDefinition();
     }
 
     private <T> void checkExcelCell(Class<T> tClass) {
