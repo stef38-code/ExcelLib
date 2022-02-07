@@ -2,6 +2,7 @@ package org.stephane.excel.parser;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.stephane.excel.ExcelException;
@@ -28,6 +29,16 @@ class ExcelToEntityTest {
     void parse_fileExcel_entity() throws ExcelException {
         List<Personne> personnes = excelToEntity.parse(fExcel, Personne.class);
         then(personnes).isNotNull().isNotEmpty();
+        personnes.forEach( personne -> assertField(personne));
+    }
+
+    private void assertField(Personne personne) {
+        Assertions.assertThat(personne.getName()).isNotNull();
+        Assertions.assertThat(personne.getPostalZip()).isNotNull();
+        Assertions.assertThat(personne.getGuid()).isNotNull();
+        Assertions.assertThat(personne.getAddress()).isNotNull();
+        Assertions.assertThat(personne.getCompany()).isNotNull();
+        Assertions.assertThat(personne.getCity()).isNotNull();
     }
 
     @Test
@@ -40,7 +51,7 @@ class ExcelToEntityTest {
     @ExcelDataHeader
     @Getter
     @Setter
-    private class Personne2 {
+    private static class Personne2 {
 
         private String name;
 
