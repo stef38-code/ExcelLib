@@ -11,16 +11,16 @@ import org.stephane.excel.annotations.ExcelSheet;
 @Getter
 @Setter
 public class Personne {
-    @ExcelCell(number =1)
+    @ExcelCell(number =0)
     private String name;
-    @ExcelCell(number =2)
+    @ExcelCell(number =1)
     private String company;
-    @ExcelCell(number =3)
+    @ExcelCell(number =2)
     private String address;
-    @ExcelCell(number =4)
+    @ExcelCell(number =3)
     private String postalZip;
-    @ExcelCell(number =5)
+    @ExcelCell(number =4)
     private String city;
-    @ExcelCell(number =6)
+    @ExcelCell(number =5)
     private String guid;
 }

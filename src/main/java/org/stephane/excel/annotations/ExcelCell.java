@@ -6,5 +6,5 @@ import java.lang.annotation.*;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExcelCell {
-    int number();
+    int number() default 0;
 }
