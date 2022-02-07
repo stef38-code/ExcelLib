@@ -25,7 +25,7 @@ class TestAnnotationExcelDataHeader {
     @Test
     void getExcelDataHeaderAnnotationValue_ExcelDataHeaderAnnotation() {
         ExcelDataHeader ExcelDataHeaderPersonne = excelAnnotationInClass.getExcelDataHeaderAnnotationValue(Personne.class);
-        thenExcelSheet(ExcelDataHeaderPersonne, 1);
+        thenExcelSheet(ExcelDataHeaderPersonne, 0);
         ExcelDataHeader ExcelDataHeaderFirst = excelAnnotationInClass.getExcelDataHeaderAnnotationValue(First.class);
         thenExcelSheet(ExcelDataHeaderFirst, 1);
 

@@ -5,7 +5,6 @@ import lombok.Setter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.stephane.excel.ExcelException;
-import org.stephane.excel.annotations.ExcelCell;
 import org.stephane.excel.annotations.ExcelDataHeader;
 import org.stephane.excel.annotations.ExcelSheet;
 import org.stephane.excel.entities.Personne;
@@ -30,6 +29,7 @@ class ExcelToEntityTest {
         List<Personne> personnes = excelToEntity.parse(fExcel, Personne.class);
         then(personnes).isNotNull().isNotEmpty();
     }
+
     @Test
     void parse_fileExcel_emptyList() throws ExcelException {
         List<Personne2> personnes = excelToEntity.parse(fExcel, Personne2.class);

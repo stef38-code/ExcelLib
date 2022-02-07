@@ -7,4 +7,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExcelCell {
     int number() default 0;
+    boolean stringFormat() default false;
 }

@@ -3,6 +3,8 @@ package org.stephane.excel.entities;
 
 import org.junit.jupiter.api.Test;
 
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
@@ -17,7 +19,7 @@ class PersonneTest {
     }
 
     @Test
-    void setterField() throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, NoSuchFieldException {
+    void setterField() throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, IntrospectionException {
         Personne personne = getNewInstance(Personne.class);
         setterField(personne, "name", "name");
         setterField(personne, "company", "company");
@@ -39,9 +41,10 @@ class PersonneTest {
         return tclass.getDeclaredConstructor().newInstance();
     }
 
-    private <T> void setterField(T object, String nameField, String value) throws NoSuchFieldException, IllegalAccessException {
-        Field field = object.getClass().getDeclaredField(nameField);
-        field.setAccessible(true);
-        field.set(object, value);
+    private <T> void setterField(T object, String nameField, String value) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
+
+        PropertyDescriptor pd = new PropertyDescriptor(nameField, object.getClass());
+        pd.getWriteMethod().invoke(object, value);
+
     }
 }

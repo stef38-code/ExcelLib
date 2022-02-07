@@ -3,29 +3,37 @@ package org.stephane.excel.parser;
 import lombok.extern.slf4j.Slf4j;
 import org.stephane.excel.ExcelException;
 
-import java.lang.reflect.Field;
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
 
 @Slf4j
 public class JavaReflection {
-    protected  <T> T getNewInstance(Class<T> tclass) throws ExcelException {
+    protected <T> T getNewInstance(Class<T> tclass) throws ExcelException {
         try {
             return tclass.getDeclaredConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            log.error("Erreur creation nouvelle instance",e);
-            throw new ExcelException("Erreur creation nouvelle instance:"+tclass.getSimpleName());
+            log.error("Erreur creation nouvelle instance", e);
+            throw new ExcelException("Erreur creation nouvelle instance:" + tclass.getSimpleName());
         }
     }
 
-    protected <T> void setterField(T tclass, String nameField, String value) throws ExcelException {
-        Field field = null;
+    protected <T> void setterField(T tclass, String nameField, Object value) throws ExcelException {
+        PropertyDescriptor pd = null;
         try {
-            field = tclass.getClass().getDeclaredField(nameField);
-            field.setAccessible(true);
-            field.set(tclass, value);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            log.error("Erreur setter",e);
-            throw new ExcelException("Erreur setter :"+tclass.getClass().getSimpleName());
+            pd = new PropertyDescriptor(nameField, tclass.getClass());
+            pd.getWriteMethod().invoke(tclass, value);
+        } catch ( IllegalArgumentException | InvocationTargetException | IntrospectionException | IllegalAccessException e) {
+            log.error("Erreur setter", e);
+            throw new ExcelException(tclass.getClass(), nameField, getTypeValue(pd), value);
         }
+    }
+
+    private String getTypeValue(PropertyDescriptor pd) {
+        if (Objects.isNull(pd)) {
+            return "!! UNDEFINE !!";
+        }
+        return pd.getReadMethod().getReturnType().getSimpleName();
     }
 }

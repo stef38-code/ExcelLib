@@ -28,16 +28,16 @@ class TestAnnotationExcelSheet {
     @Test
     void getExcelSheetAnnotationValue_ExcelSheetAnnotation() {
         ExcelSheet ExcelSheetPersonne = excelAnnotationInClass.getExcelSheetAnnotationValue(Personne.class);
-        thenExcelSheet(ExcelSheetPersonne, 1, StringUtils.EMPTY);
+        thenExcelSheet(ExcelSheetPersonne, 0, StringUtils.EMPTY);
         ExcelSheet ExcelSheetFirst = excelAnnotationInClass.getExcelSheetAnnotationValue(First.class);
-        thenExcelSheet(ExcelSheetFirst, 1, StringUtils.EMPTY);
+        thenExcelSheet(ExcelSheetFirst, 0, StringUtils.EMPTY);
 
         ExcelSheet ExcelSheetSecond = excelAnnotationInClass.getExcelSheetAnnotationValue(Second.class);
         thenExcelSheet(ExcelSheetSecond, 2, StringUtils.EMPTY);
 
 
         ExcelSheet ExcelSheetThird = excelAnnotationInClass.getExcelSheetAnnotationValue(Third.class);
-        thenExcelSheet(ExcelSheetThird, 1, "Feuil1");
+        thenExcelSheet(ExcelSheetThird, 0, "Feuil1");
 
         ExcelSheet ExcelSheetFourth = excelAnnotationInClass.getExcelSheetAnnotationValue(Fourth.class);
         thenExcelSheet(ExcelSheetFourth, 3, "Feuil1");
