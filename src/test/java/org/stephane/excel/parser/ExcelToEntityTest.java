@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.stephane.excel.ExcelException;
 import org.stephane.excel.annotations.ExcelDataHeader;
 import org.stephane.excel.annotations.ExcelSheet;
+import org.stephane.excel.entities.Chien;
 import org.stephane.excel.entities.Personne;
 import org.stephane.excel.tools.FileUtil;
 
@@ -26,12 +27,17 @@ class ExcelToEntityTest {
     }
 
     @Test
-    void parse_fileExcel_entity() throws ExcelException {
+    void parse_fileExcel_entityPersonne() throws ExcelException {
         List<Personne> personnes = excelToEntity.parse(fExcel, Personne.class);
         then(personnes).isNotNull().isNotEmpty();
         personnes.forEach( personne -> assertField(personne));
     }
-
+    @Test
+    void parse_fileExcel_entityChien() throws ExcelException {
+        fExcel = FileUtil.getAbsolutePath("dogregistration2.xls");
+        List<Chien> chiens = excelToEntity.parse(fExcel, Chien.class);
+        then(chiens).isNotNull().isNotEmpty();
+    }
     private void assertField(Personne personne) {
         Assertions.assertThat(personne.getName()).isNotNull();
         Assertions.assertThat(personne.getPostalZip()).isNotNull();
