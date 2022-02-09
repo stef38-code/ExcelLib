@@ -1,10 +1,12 @@
 package org.stephane.excel.tools;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.stephane.excel.annotations.ExcelCell;
 
+@Slf4j
 public class CellTools {
     private CellTools() {
     }
@@ -42,6 +44,8 @@ public class CellTools {
     }
 
     public static String returnStringValue(Cell cell) {
+        log.info("type de cellule {}",cell.toString());
+        log.info("type de cellule {}",cell.getCellType());
         CellType cellType = cell.getCellType();
 
         switch (cellType) {
