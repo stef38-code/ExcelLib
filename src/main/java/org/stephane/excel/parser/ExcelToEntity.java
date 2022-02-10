@@ -68,8 +68,12 @@ public class ExcelToEntity extends JavaReflection {
             Cell cell = row.getCell(annotation.number());
             //todo faire la gestion des type de cellule
             //ici force le format string
-            log.info("field name: {} cellule: [{},{}] value {}", field.getName(), row.getRowNum(), annotation.number(), CellTools.returnStringValue(cell));
-            setterField(entity, field.getName(), CellTools.getValue(annotation, cell));
+            if(! Objects.isNull(cell)) {
+                log.info("field name: {} cellule: [{},{}] value {}", field.getName(), row.getRowNum(), annotation.number(), CellTools.returnStringValue(cell));
+                setterField(entity, field.getName(), CellTools.getValue(annotation, cell));
+            }else{
+                log.warn("Cell NULL field name: {} cellule: [{},{}] value {}", field.getName(), row.getRowNum(), annotation.number());
+            }
         }
         return entity;
     }
