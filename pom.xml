@@ -30,6 +30,7 @@
         <jacoco-maven-plugin.line.minimum>0.70</jacoco-maven-plugin.line.minimum>
         <jacoco-maven-plugin.branch.minimum>0.70</jacoco-maven-plugin.branch.minimum>
         <slf4j-api.version>1.7.25</slf4j-api.version>
+        <log4j.version>2.17.0</log4j.version>
     </properties>
     <dependencies>
         <dependency>
@@ -83,6 +84,17 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>${apache.poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j.version}</version>
         </dependency>
     </dependencies>
     <build>
