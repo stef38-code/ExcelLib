@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="DEBUG" monitorInterval="30">
+<Configuration status="INFO" monitorInterval="30">
 <!-- Logging Properties -->
 	<Properties>
-		<Property name="LOG_PATTERN">[%p] %d{DEFAULT} %C{1}.%M(%F:%L)  %m%n</Property>
+		<Property name="LOG_PATTERN">[%p] -@- %d{DEFAULT} -@- %C{1}.%M(%F:%L) -@- %m%n</Property>
 	</Properties>
 	<Appenders>
 	<!-- Console Appender -->
