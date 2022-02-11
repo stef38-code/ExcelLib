@@ -13,6 +13,7 @@ import org.stephane.excel.annotations.ExcelDataHeader;
 import org.stephane.excel.annotations.ExcelSheet;
 import org.stephane.excel.tools.CellTools;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -32,15 +33,31 @@ public class ExcelToEntity extends JavaReflection {
      * @throws ExcelException en cas d'une erreur
      */
     public <T> List<T> parse(String fExcel, Class<T> tclass) throws ExcelException {
-        Workbook workbook = excelFile.readXls(fExcel);
         //0. Analyse des annotations de la classe
         EntityDefinition entityDefinition = analyseClass.check(tclass);
-        //1. selection sheet
-        Sheet sheetSelected = getSheetSelected(entityDefinition.getExcelSheet().orElse(null), workbook);
-        //2. info sur le début ( ligne de définition )
-        int numberDataHeader = getNumberRowHeader(entityDefinition.getExcelDataHeader());
-        //3. creation de les entities
-        return createListEntities(tclass, entityDefinition, sheetSelected, numberDataHeader);
+
+        if (entityDefinition.isContainsFieldAnnotations()) {
+            log.info("//1. open file selection sheet");
+            Workbook workbook = excelFile.readXls(fExcel);
+            Sheet sheetSelected = getSheetSelected(entityDefinition.getExcelSheet().orElse(null), workbook);
+            log.info("//2. info sur le début ( ligne de définition )");
+            int numberDataHeader = getNumberRowHeader(entityDefinition.getExcelDataHeader());
+            log.info("//3. creation de les entities");
+            List<T> listEntities = createListEntities(tclass, entityDefinition, sheetSelected, numberDataHeader);
+            log.info("//4. fermeture du workbook");
+            closeWorkBook(workbook);
+            return listEntities;
+        }
+        throw new ExcelException("Annotation not found !!");
+    }
+
+    private void closeWorkBook(Workbook workbook) throws ExcelException {
+        try {
+            workbook.close();
+        } catch (IOException e) {
+            log.error("Erreur sur la fermeture",e);
+            throw new ExcelException("Erreur fermeture");
+        }
     }
 
     private <T> List<T> createListEntities(Class<T> tclass, EntityDefinition entityDefinition, Sheet sheetSelected, int numberDataHeader) throws ExcelException {
@@ -49,9 +66,9 @@ public class ExcelToEntity extends JavaReflection {
             List<T> entities = new ArrayList<>();
 
             for (Row row : sheetSelected) {
-                log.info("numéro de ligne: {}", row.getRowNum());
+                log.debug("numéro de ligne: {}", row.getRowNum());
                 if (row.getRowNum() > numberDataHeader) {
-                    log.info("numéro de ligne à traiter: {}", row.getRowNum());
+                    log.debug("numéro de ligne à traiter: {}", row.getRowNum());
                     entities.add(createEntity(tclass, fields, row));
                 }
             }
@@ -63,13 +80,12 @@ public class ExcelToEntity extends JavaReflection {
     private <T> T createEntity(Class<T> tclass, List<Field> fields, Row row) throws ExcelException {
         T entity = getNewInstance(tclass);
         for (Field field : fields) {
-            String fieldName = field.getName();
             ExcelCell annotation = field.getAnnotation(ExcelCell.class);
             Cell cell = row.getCell(annotation.number());
             //todo faire la gestion des type de cellule
             //ici force le format string
             if(! Objects.isNull(cell)) {
-                log.info("field name: {} cellule: [{},{}] value {}", field.getName(), row.getRowNum(), annotation.number(), CellTools.returnStringValue(cell));
+                log.debug("field name: {} cellule: [{},{}] value {}", field.getName(), row.getRowNum(), annotation.number(), CellTools.returnStringValue(cell));
                 setterField(entity, field.getName(), CellTools.getValue(annotation, cell));
             }else{
                 log.warn("Cell NULL field name: {} cellule: [{},{}] value {}", field.getName(), row.getRowNum(), annotation.number());

@@ -15,4 +15,8 @@ public class EntityDefinition {
     private Optional<ExcelSheet> excelSheet = Optional.empty();
     private Optional<ExcelDataHeader> excelDataHeader= Optional.empty();
     private Optional<List<Field>> fields= Optional.empty();
+
+    public boolean isContainsFieldAnnotations(){
+        return getExcelDataHeader().isPresent();
+    }
 }
