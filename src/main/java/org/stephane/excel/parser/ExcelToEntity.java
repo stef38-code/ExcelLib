@@ -33,7 +33,7 @@ public class ExcelToEntity extends JavaReflection {
      * @throws ExcelException en cas d'une erreur
      */
     public <T> List<T> parse(String fExcel, Class<T> tclass) throws ExcelException {
-        //0. Analyse des annotations de la classe
+        log.info("//0. Analyse des annotations de la classe");
         EntityDefinition entityDefinition = analyseClass.check(tclass);
 
         if (entityDefinition.isContainsFieldAnnotations()) {
@@ -62,21 +62,34 @@ public class ExcelToEntity extends JavaReflection {
 
     private <T> List<T> createListEntities(Class<T> tclass, EntityDefinition entityDefinition, Sheet sheetSelected, int numberDataHeader) throws ExcelException {
         List<Field> fields = entityDefinition.getFields().orElse(Collections.emptyList());
+        List<T> entities = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(fields)) {
-            List<T> entities = new ArrayList<>();
-
-            for (Row row : sheetSelected) {
-                log.debug("numéro de ligne: {}", row.getRowNum());
-                if (row.getRowNum() > numberDataHeader) {
-                    log.debug("numéro de ligne à traiter: {}", row.getRowNum());
-                    entities.add(createEntity(tclass, fields, row));
-                }
-            }
-            return entities;
+            Iterator<Row> rowIterator = sheetSelected.rowIterator();
+            ReadRowOneByOne(rowIterator,fields,entities,tclass,entityDefinition,sheetSelected,numberDataHeader);
         }
-        return Collections.emptyList();
+return entities;
     }
-
+    private <T> void ReadRowOneByOne(Iterator<Row> rowIterator,List<Field> fields, List<T> entities,Class<T> tclass, EntityDefinition entityDefinition, Sheet sheetSelected, int numberDataHeader ) throws ExcelException {
+        if(rowIterator.hasNext()){
+            Row row= rowIterator.next();
+            log.info("=====> rowIterator: {}",row.getRowNum());
+            //
+            if (row.getRowNum() > numberDataHeader) {
+                log.debug("numéro de ligne à traiter: {}", row.getRowNum());
+                entities.add(createEntity(tclass, fields, row));
+            }
+            //la ligne suivante
+            ReadRowOneByOne(rowIterator, fields, entities, tclass, entityDefinition,  sheetSelected,  numberDataHeader);
+        }
+    }
+    private <T> void readRow(Row row, List<Field> fields, Class<T> tclass, EntityDefinition entityDefinition, Sheet sheetSelected, int numberDataHeader, List<T> entities) throws ExcelException {
+        log.debug("numéro de ligne: {}", row.getRowNum());
+        //
+        if (row.getRowNum() > numberDataHeader) {
+            log.debug("numéro de ligne à traiter: {}", row.getRowNum());
+            entities.add(createEntity(tclass, fields, row));
+        }
+    }
     private <T> T createEntity(Class<T> tclass, List<Field> fields, Row row) throws ExcelException {
         T entity = getNewInstance(tclass);
         for (Field field : fields) {
