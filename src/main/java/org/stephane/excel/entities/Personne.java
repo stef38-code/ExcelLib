@@ -6,7 +6,7 @@ import org.stephane.excel.annotations.ExcelCell;
 import org.stephane.excel.annotations.ExcelDataHeader;
 import org.stephane.excel.annotations.ExcelSheet;
 
-@ExcelSheet
+@ExcelSheet(name = "Feuil1")
 @ExcelDataHeader(rowNumber = 0)
 @Getter
 @Setter

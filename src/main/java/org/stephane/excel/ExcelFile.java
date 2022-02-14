@@ -10,28 +10,23 @@ import java.io.IOException;
 
 @Slf4j
 public class ExcelFile {
-    private File excelFile;
     @Getter
     private Workbook workbook;
 
     public Workbook readXls(String excelFile) throws ExcelException {
         try {
-            this.excelFile = new File(excelFile);
-            if (!this.excelFile.exists()) {
+            File excelFile1 = new File(excelFile);
+            if (!excelFile1.exists()) {
 
                 workbook = WorkbookFactory.create(false);
 
             } else {
-                workbook = WorkbookFactory.create(this.excelFile);
+                workbook = WorkbookFactory.create(excelFile1);
             }
         } catch (IOException e) {
             log.error("Erreur lecture du fichier", e);
             throw new ExcelException("Erreur lecture du fichier:" + excelFile);
         }
         return workbook;
-    }
-
-    public org.apache.poi.ss.usermodel.Workbook getWorkbook() {
-        return this.workbook;
     }
 }

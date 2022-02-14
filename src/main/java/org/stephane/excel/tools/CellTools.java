@@ -19,8 +19,8 @@ public class CellTools {
     }
 
     private static Object returnValue(Cell cell) {
+        log.debug("ObjectValue -> type de cellule {} ",cell.getCellType());
         CellType cellType = cell.getCellType();
-
         switch (cellType) {
             case NUMERIC:
                 if (DateUtil.isCellDateFormatted(cell)) {
@@ -44,8 +44,7 @@ public class CellTools {
     }
 
     public static String returnStringValue(Cell cell) {
-        log.info("type de cellule {}",cell.toString());
-        log.info("type de cellule {}",cell.getCellType());
+        log.debug("stringValue -> type de cellule {} value {}",cell.getCellType(), cell);
         CellType cellType = cell.getCellType();
 
         switch (cellType) {

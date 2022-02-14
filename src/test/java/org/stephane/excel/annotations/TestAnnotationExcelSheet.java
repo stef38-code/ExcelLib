@@ -28,7 +28,7 @@ class TestAnnotationExcelSheet {
     @Test
     void getExcelSheetAnnotationValue_ExcelSheetAnnotation() {
         ExcelSheet ExcelSheetPersonne = excelAnnotationInClass.getExcelSheetAnnotationValue(Personne.class);
-        thenExcelSheet(ExcelSheetPersonne, 0, StringUtils.EMPTY);
+        thenExcelSheet(ExcelSheetPersonne, 0, "Feuil1");
         ExcelSheet ExcelSheetFirst = excelAnnotationInClass.getExcelSheetAnnotationValue(First.class);
         thenExcelSheet(ExcelSheetFirst, 0, StringUtils.EMPTY);
 
@@ -73,7 +73,7 @@ class TestAnnotationExcelSheet {
 
     }
 
-    private class Fifth {
+    private static class Fifth {
 
     }
 

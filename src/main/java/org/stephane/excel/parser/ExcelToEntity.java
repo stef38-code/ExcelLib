@@ -21,106 +21,112 @@ import java.util.*;
 public class ExcelToEntity extends JavaReflection {
 
 
-    private AnalyseClass analyseClass = new AnalyseClass();
-    private ExcelFile excelFile = new ExcelFile();
+    private final AnalyseClass analyseClass = new AnalyseClass();
+    private final ExcelFile excelFile = new ExcelFile();
 
     /**
      * conversion d'un onglet Excel en une liste de classe
+     *
      * @param fExcel le fichier Excel
      * @param tclass la classe des données
-     * @param <T> type de la classe de données
+     * @param <T>    type de la classe de données
      * @return une liste de classe
      * @throws ExcelException en cas d'une erreur
      */
     public <T> List<T> parse(String fExcel, Class<T> tclass) throws ExcelException {
-        log.info("//0. Analyse des annotations de la classe");
+        log.debug("//0. Analyse des annotations de la classe");
         EntityDefinition entityDefinition = analyseClass.check(tclass);
 
-        if (entityDefinition.isContainsFieldAnnotations()) {
-            log.info("//1. open file selection sheet");
-            Workbook workbook = excelFile.readXls(fExcel);
-            Sheet sheetSelected = getSheetSelected(entityDefinition.getExcelSheet().orElse(null), workbook);
-            log.info("//2. info sur le début ( ligne de définition )");
-            int numberDataHeader = getNumberRowHeader(entityDefinition.getExcelDataHeader());
-            log.info("//3. creation de les entities");
-            List<T> listEntities = createListEntities(tclass, entityDefinition, sheetSelected, numberDataHeader);
-            log.info("//4. fermeture du workbook");
-            closeWorkBook(workbook);
-            return listEntities;
+        if (!entityDefinition.isContainsFieldAnnotations()) {
+            log.error("Annotation not found in class {}",tclass.getSimpleName());
+            throw new ExcelException("Annotation not found !!");
         }
-        throw new ExcelException("Annotation not found !!");
+        log.debug("//1. open file selection sheet");
+        Workbook workbook = excelFile.readXls(fExcel);
+        ExcelSheet excelSheetAnnotation = entityDefinition.getExcelSheet();
+        Sheet sheetSelected = getSheetSelected(excelSheetAnnotation, workbook);
+        log.debug("//2. info sur le début ( ligne de définition )");
+        ExcelDataHeader excelDataHeaderAnnotation = entityDefinition.getExcelDataHeader();
+        int numberDataHeader = getNumberRowHeader(excelDataHeaderAnnotation);
+        log.debug("//3. creation de les entities");
+        List<T> listEntities = createListEntities(tclass, entityDefinition, sheetSelected, numberDataHeader);
+        log.debug("//4. fermeture du workbook");
+        closeWorkBook(workbook);
+        return listEntities;
+
     }
 
     private void closeWorkBook(Workbook workbook) throws ExcelException {
         try {
             workbook.close();
         } catch (IOException e) {
-            log.error("Erreur sur la fermeture",e);
+            log.error("Erreur sur la fermeture", e);
             throw new ExcelException("Erreur fermeture");
         }
     }
 
     private <T> List<T> createListEntities(Class<T> tclass, EntityDefinition entityDefinition, Sheet sheetSelected, int numberDataHeader) throws ExcelException {
-        List<Field> fields = entityDefinition.getFields().orElse(Collections.emptyList());
+        List<Field> fields = entityDefinition.getFields();
         List<T> entities = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(fields)) {
             Iterator<Row> rowIterator = sheetSelected.rowIterator();
-            ReadRowOneByOne(rowIterator,fields,entities,tclass,entityDefinition,sheetSelected,numberDataHeader);
+            readRowOneByOne(rowIterator, fields, entities, tclass, numberDataHeader);
         }
-return entities;
+        return entities;
     }
-    private <T> void ReadRowOneByOne(Iterator<Row> rowIterator,List<Field> fields, List<T> entities,Class<T> tclass, EntityDefinition entityDefinition, Sheet sheetSelected, int numberDataHeader ) throws ExcelException {
-        if(rowIterator.hasNext()){
-            Row row= rowIterator.next();
-            log.info("=====> rowIterator: {}",row.getRowNum());
-            //
-            if (row.getRowNum() > numberDataHeader) {
-                log.debug("numéro de ligne à traiter: {}", row.getRowNum());
-                entities.add(createEntity(tclass, fields, row));
-            }
-            //la ligne suivante
-            ReadRowOneByOne(rowIterator, fields, entities, tclass, entityDefinition,  sheetSelected,  numberDataHeader);
+
+    private <T> void readRowOneByOne(Iterator<Row> rowIterator, List<Field> fields, List<T> entities, Class<T> tclass, int numberDataHeader) throws ExcelException {
+        if (!rowIterator.hasNext()) {
+            return;
         }
-    }
-    private <T> void readRow(Row row, List<Field> fields, Class<T> tclass, EntityDefinition entityDefinition, Sheet sheetSelected, int numberDataHeader, List<T> entities) throws ExcelException {
-        log.debug("numéro de ligne: {}", row.getRowNum());
+        Row row = rowIterator.next();
+        log.debug("current row: {}", row.getRowNum());
         //
         if (row.getRowNum() > numberDataHeader) {
-            log.debug("numéro de ligne à traiter: {}", row.getRowNum());
+            log.debug("add new Entity with number row {}", row.getRowNum());
             entities.add(createEntity(tclass, fields, row));
         }
+        //la ligne suivante
+        readRowOneByOne(rowIterator, fields, entities, tclass, numberDataHeader);
     }
+
+
     private <T> T createEntity(Class<T> tclass, List<Field> fields, Row row) throws ExcelException {
         T entity = getNewInstance(tclass);
-        for (Field field : fields) {
-            ExcelCell annotation = field.getAnnotation(ExcelCell.class);
-            Cell cell = row.getCell(annotation.number());
-            //todo faire la gestion des type de cellule
-            //ici force le format string
-            if(! Objects.isNull(cell)) {
-                log.debug("field name: {} cellule: [{},{}] value {}", field.getName(), row.getRowNum(), annotation.number(), CellTools.returnStringValue(cell));
-                setterField(entity, field.getName(), CellTools.getValue(annotation, cell));
-            }else{
-                log.warn("Cell NULL field name: {} cellule: [{},{}] value {}", field.getName(), row.getRowNum(), annotation.number());
-            }
-        }
+        ListIterator<Field> fieldListIterator = fields.listIterator();
+        readFieldOneByOne(fieldListIterator,row, entity);
         return entity;
     }
 
-    private int getNumberRowHeader(Optional<ExcelDataHeader> excelDataHeader) {
-        if (excelDataHeader.isPresent()) {
-            return excelDataHeader.get().rowNumber();
+    private <T> void readFieldOneByOne(Iterator<Field> fieldIterator,Row row, T entity) throws ExcelException {
+        if (!fieldIterator.hasNext()) {
+            return;
         }
-        return 0; //todo par défaut à mettre en variable static
+        Field field = fieldIterator.next();
+
+        ExcelCell annotation = field.getAnnotation(ExcelCell.class);
+        Cell cell = row.getCell(annotation.number());
+        //todo faire la gestion des type de cellule
+        //ici force le format string
+        if (!Objects.isNull(cell)) {
+            log.debug("field name: {} cellule: [{},{}] value {}", field.getName(), row.getRowNum(), annotation.number(), CellTools.returnStringValue(cell));
+            setterField(entity, field.getName(), CellTools.getValue(annotation, cell));
+        } else {
+            log.warn("Cell NULL field name: {} cellule: [{},{}]", field.getName(), row.getRowNum(), annotation.number());
+        }
+        readFieldOneByOne( fieldIterator,row, entity);
+    }
+    private int getNumberRowHeader(ExcelDataHeader excelDataHeader) {
+        if (Objects.isNull(excelDataHeader) )
+            return 0;
+
+        return excelDataHeader.rowNumber();
     }
 
     private Sheet getSheetSelected(ExcelSheet excelSheet, Workbook workbook) {
-        if (Objects.isNull(excelSheet))
-            return workbook.getSheetAt(excelSheet.number());
+        if (Objects.isNull(excelSheet) || excelSheet.name().isBlank())
+            return workbook.getSheetAt(0);
 
-        if (excelSheet.name().isBlank()) {
-            return workbook.getSheetAt(excelSheet.number());
-        }
         return workbook.getSheet(excelSheet.name());
     }
 }

@@ -13,7 +13,7 @@ import org.stephane.excel.annotations.ExcelSheet;
 public class Chien {
     // Reference
     @ExcelCell
-    private String Ref;
+    private String ref;
     // Animal_Name
     @ExcelCell(number =1)
     private String nomAnimal;

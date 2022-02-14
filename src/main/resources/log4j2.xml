@@ -13,9 +13,9 @@
 
 	<Loggers>
 
-		<!--<Logger name="org.stephane.excel" additivity="false" level="trace">
+		<Logger name="org.stephane.excel" additivity="false" level="debug">
 			<AppenderRef ref="Console" />
-		</Logger>-->
+		</Logger>
 		<Root level="DEBUG">
 			<AppenderRef ref="Console"/>
 		</Root>
