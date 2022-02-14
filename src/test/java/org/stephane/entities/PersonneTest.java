@@ -1,11 +1,10 @@
-package org.stephane.excel.entities;
+package org.stephane.entities;
 
 
 import org.junit.jupiter.api.Test;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
 import static org.assertj.core.api.BDDAssertions.then;

@@ -1,12 +1,11 @@
-package org.stephane.excel.parser;
+package org.stephane.excel.business;
 
 import org.junit.jupiter.api.Test;
 import org.stephane.excel.ExcelException;
-import org.stephane.excel.entities.Personne;
+import org.stephane.entities.Personne;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.BDDAssertions.then;
-import static org.junit.jupiter.api.Assertions.*;
 
 class JavaReflectionTest {
     @Test

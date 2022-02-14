@@ -10,10 +10,13 @@ import java.io.IOException;
 
 @Slf4j
 public class ExcelFile {
-    @Getter
-    private Workbook workbook;
+    private ExcelFile() {
+    }
 
-    public Workbook readXls(String excelFile) throws ExcelException {
+    @Getter
+    private static Workbook workbook;
+
+    public static Workbook readXls(String excelFile) throws ExcelException {
         try {
             File excelFile1 = new File(excelFile);
             if (!excelFile1.exists()) {

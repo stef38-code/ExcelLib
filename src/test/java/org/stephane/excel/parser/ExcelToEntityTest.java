@@ -9,8 +9,8 @@ import org.stephane.excel.ExcelException;
 import org.stephane.excel.annotations.ExcelCell;
 import org.stephane.excel.annotations.ExcelDataHeader;
 import org.stephane.excel.annotations.ExcelSheet;
-import org.stephane.excel.entities.Chien;
-import org.stephane.excel.entities.Personne;
+import org.stephane.entities.Chien;
+import org.stephane.entities.Personne;
 import org.stephane.excel.tools.FileUtil;
 
 import java.util.List;
@@ -89,7 +89,7 @@ class ExcelToEntityTest {
     @ExcelDataHeader
     @Getter
     @Setter
-    private static class Personne2 {
+    public static class Personne2 {
 
         private String name;
 
@@ -108,7 +108,7 @@ class ExcelToEntityTest {
     @ExcelDataHeader(rowNumber = 8)
     @Getter
     @Setter
-    private static class Personne3 {
+    public static class Personne3 {
         @ExcelCell
         private String name;
         @ExcelCell(number = 1)

@@ -8,20 +8,23 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class AnnotationInClass {
-    protected <T, A extends Annotation> boolean isAnnotationPresent(Class<T> tClass, Class<A> aClass) {
+    private AnnotationInClass() {
+    }
+
+    protected static <T, A extends Annotation> boolean isAnnotationPresent(Class<T> tClass, Class<A> aClass) {
         return tClass.isAnnotationPresent(aClass);
     }
 
-    protected <T, A extends Annotation> boolean isFieldAnnotationPresent(Class<T> tClass, Class<A> aClass) {
+    protected static <T, A extends Annotation> boolean isFieldAnnotationPresent(Class<T> tClass, Class<A> aClass) {
         return Stream.of(tClass.getDeclaredFields())
                 .anyMatch(field -> Objects.nonNull(field.getAnnotation(aClass)));
     }
 
-    protected <T, A extends Annotation> A getClassAnnotation(Class<T> tClass, Class<A> aClass) {
+    protected static <T, A extends Annotation> A getClassAnnotation(Class<T> tClass, Class<A> aClass) {
         return tClass.getAnnotation(aClass);
     }
 
-    protected <T, A extends Annotation> List<Field> getFieldContainAnnotation(Class<T> tClass, Class<A> aClass) {
+    protected static <T, A extends Annotation> List<Field> getFieldContainAnnotation(Class<T> tClass, Class<A> aClass) {
         return Stream.of(tClass.getDeclaredFields())
                 .filter(field -> Objects.nonNull(field.getAnnotation(aClass)))
                 .collect(Collectors.toList());

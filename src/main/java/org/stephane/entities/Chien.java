@@ -1,4 +1,4 @@
-package org.stephane.excel.entities;
+package org.stephane.entities;
 
 import lombok.Getter;
 import lombok.Setter;

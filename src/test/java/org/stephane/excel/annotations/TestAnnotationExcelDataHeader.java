@@ -1,39 +1,32 @@
 package org.stephane.excel.annotations;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.stephane.excel.entities.Personne;
+import org.stephane.entities.Personne;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
 class TestAnnotationExcelDataHeader {
-    private ExcelAnnotationInClass excelAnnotationInClass;
-
-    @BeforeEach
-    void setUp() {
-        excelAnnotationInClass = new ExcelAnnotationInClass();
-    }
 
     @Test
     void isExcelDataHeaderAnnotationPresent_Class_ExcelDataHeader() {
-        then(excelAnnotationInClass.isExcelDataHeaderAnnotationPresent(Personne.class)).isTrue();
-        then(excelAnnotationInClass.isExcelDataHeaderAnnotationPresent(First.class)).isTrue();
-        then(excelAnnotationInClass.isExcelDataHeaderAnnotationPresent(Second.class)).isTrue();
-        then(excelAnnotationInClass.isExcelDataHeaderAnnotationPresent(Third.class)).isFalse();
+        then(ExcelAnnotationInClass.isExcelDataHeaderAnnotationPresent(Personne.class)).isTrue();
+        then(ExcelAnnotationInClass.isExcelDataHeaderAnnotationPresent(First.class)).isTrue();
+        then(ExcelAnnotationInClass.isExcelDataHeaderAnnotationPresent(Second.class)).isTrue();
+        then(ExcelAnnotationInClass.isExcelDataHeaderAnnotationPresent(Third.class)).isFalse();
     }
 
     @Test
     void getExcelDataHeaderAnnotationValue_ExcelDataHeaderAnnotation() {
-        ExcelDataHeader ExcelDataHeaderPersonne = excelAnnotationInClass.getExcelDataHeaderAnnotationValue(Personne.class);
+        ExcelDataHeader ExcelDataHeaderPersonne = ExcelAnnotationInClass.getExcelDataHeaderAnnotationValue(Personne.class);
         thenExcelSheet(ExcelDataHeaderPersonne, 0);
-        ExcelDataHeader ExcelDataHeaderFirst = excelAnnotationInClass.getExcelDataHeaderAnnotationValue(First.class);
+        ExcelDataHeader ExcelDataHeaderFirst = ExcelAnnotationInClass.getExcelDataHeaderAnnotationValue(First.class);
         thenExcelSheet(ExcelDataHeaderFirst, 1);
 
-        ExcelDataHeader ExcelDataHeaderSecond = excelAnnotationInClass.getExcelDataHeaderAnnotationValue(Second.class);
+        ExcelDataHeader ExcelDataHeaderSecond = ExcelAnnotationInClass.getExcelDataHeaderAnnotationValue(Second.class);
         thenExcelSheet(ExcelDataHeaderSecond, 2);
 
 
-        ExcelDataHeader ExcelDataHeaderThird = excelAnnotationInClass.getExcelDataHeaderAnnotationValue(Third.class);
+        ExcelDataHeader ExcelDataHeaderThird = ExcelAnnotationInClass.getExcelDataHeaderAnnotationValue(Third.class);
         then(ExcelDataHeaderThird).isNull();
 
     }
