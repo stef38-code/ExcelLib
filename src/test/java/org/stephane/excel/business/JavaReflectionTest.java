@@ -1,8 +1,8 @@
 package org.stephane.excel.business;
 
 import org.junit.jupiter.api.Test;
-import org.stephane.excel.ExcelException;
 import org.stephane.entities.Personne;
+import org.stephane.excel.exceptions.ExcelException;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.BDDAssertions.then;
@@ -26,14 +26,15 @@ class JavaReflectionTest {
         then(personne.getCity()).hasToString("city");
         then(personne.getGuid()).hasToString("guid");
     }
+
     @Test
     void exception() throws ExcelException {
         JavaReflection javaReflection = new JavaReflection();
         Personne personne = javaReflection.getNewInstance(Personne.class);
-        assertThatThrownBy(()->{
+        assertThatThrownBy(() -> {
             javaReflection.setterField(personne, "Bidon", "name");
         }).isInstanceOf(ExcelException.class);
-        assertThatThrownBy(()->{
+        assertThatThrownBy(() -> {
             javaReflection.setterField(personne, "name", 123.00);
         }).isInstanceOf(ExcelException.class);
     }

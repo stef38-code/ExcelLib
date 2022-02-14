@@ -1,7 +1,7 @@
 package org.stephane.excel.business;
 
 import lombok.extern.slf4j.Slf4j;
-import org.stephane.excel.ExcelException;
+import org.stephane.excel.exceptions.ExcelException;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
@@ -24,7 +24,7 @@ public class JavaReflection {
         try {
             pd = new PropertyDescriptor(nameField, tclass.getClass());
             pd.getWriteMethod().invoke(tclass, value);
-        } catch ( IllegalArgumentException | InvocationTargetException | IntrospectionException | IllegalAccessException e) {
+        } catch (IllegalArgumentException | InvocationTargetException | IntrospectionException | IllegalAccessException e) {
             log.error("Erreur setter", e);
             throw new ExcelException(tclass.getClass(), nameField, getTypeValue(pd), value);
         }

@@ -3,9 +3,8 @@ package org.stephane.excel.business;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.stephane.excel.ExcelException;
 import org.stephane.excel.annotations.ExcelCell;
-import org.stephane.excel.business.JavaReflection;
+import org.stephane.excel.exceptions.ExcelException;
 import org.stephane.excel.tools.CellTools;
 
 import java.lang.reflect.Field;

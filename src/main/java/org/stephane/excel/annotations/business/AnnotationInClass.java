@@ -1,4 +1,4 @@
-package org.stephane.excel.annotations;
+package org.stephane.excel.annotations.business;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

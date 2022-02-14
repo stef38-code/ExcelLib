@@ -1,4 +1,4 @@
-package org.stephane.excel;
+package org.stephane.excel.exceptions;
 
 import java.text.MessageFormat;
 

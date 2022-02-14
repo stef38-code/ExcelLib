@@ -1,9 +1,10 @@
-package org.stephane.excel;
+package org.stephane.excel.tools;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.stephane.excel.exceptions.ExcelException;
 
 import java.io.File;
 import java.io.IOException;

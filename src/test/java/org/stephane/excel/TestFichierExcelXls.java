@@ -3,6 +3,8 @@ package org.stephane.excel;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.stephane.excel.exceptions.ExcelException;
+import org.stephane.excel.tools.ExcelFile;
 import org.stephane.excel.tools.FileUtil;
 
 import static org.assertj.core.api.BDDAssertions.then;

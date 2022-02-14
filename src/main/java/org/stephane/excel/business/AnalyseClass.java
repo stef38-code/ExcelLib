@@ -1,6 +1,6 @@
 package org.stephane.excel.business;
 
-import org.stephane.excel.annotations.ExcelAnnotationInClass;
+import org.stephane.excel.annotations.business.ExcelAnnotationInClass;
 import org.stephane.excel.parser.entities.EntityDefinition;
 import org.stephane.excel.parser.entities.EntityDefinitionBuilder;
 

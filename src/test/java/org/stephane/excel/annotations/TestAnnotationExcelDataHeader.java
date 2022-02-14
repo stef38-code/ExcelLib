@@ -2,6 +2,7 @@ package org.stephane.excel.annotations;
 
 import org.junit.jupiter.api.Test;
 import org.stephane.entities.Personne;
+import org.stephane.excel.annotations.business.ExcelAnnotationInClass;
 
 import static org.assertj.core.api.BDDAssertions.then;
 

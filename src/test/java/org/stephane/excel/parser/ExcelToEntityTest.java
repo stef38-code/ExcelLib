@@ -5,12 +5,12 @@ import lombok.Setter;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.stephane.excel.ExcelException;
+import org.stephane.entities.Chien;
+import org.stephane.entities.Personne;
 import org.stephane.excel.annotations.ExcelCell;
 import org.stephane.excel.annotations.ExcelDataHeader;
 import org.stephane.excel.annotations.ExcelSheet;
-import org.stephane.entities.Chien;
-import org.stephane.entities.Personne;
+import org.stephane.excel.exceptions.ExcelException;
 import org.stephane.excel.tools.FileUtil;
 
 import java.util.List;
@@ -35,7 +35,7 @@ class ExcelToEntityTest {
         personnes.forEach(this::thenFieldNotNull);
         thenSpecificField(personnes.get(0), "Kelsie Knowles", "Ut Pellentesque Eget Inc.", "P.O. Box 206, 4536 In Road", "62860.0", "Saint-Louis", "1503737E-17EF-4B3E-3B9F-3B73863350DB");
         thenSpecificField(personnes.get(15), "Dane Kidd", "Molestie Company", "P.O. Box 208, 3812 Dolor, Rd.", "62824.0", "Limoges", "6EC185EB-3185-4C5E-413E-E45DDB4CA6FF");
-        thenSpecificField(personnes.get(personnes.size() - 1), "Quynn Cox", "Bibendum Sed Associates", "Ap #868-4434 Eget Rd.", "21858.0", "Boulogne-sur-Mer", "CAE76A63-DA3C-09D7-7B11-C9DBA9FA310A"        );
+        thenSpecificField(personnes.get(personnes.size() - 1), "Quynn Cox", "Bibendum Sed Associates", "Ap #868-4434 Eget Rd.", "21858.0", "Boulogne-sur-Mer", "CAE76A63-DA3C-09D7-7B11-C9DBA9FA310A");
 
     }
 
