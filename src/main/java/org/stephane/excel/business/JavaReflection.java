@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Slf4j
 public class JavaReflection {
-    protected <T> T getNewInstance(Class<T> tclass) throws ExcelException {
+    public <T> T getNewInstance(Class<T> tclass) throws ExcelException {
         try {
             return tclass.getDeclaredConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
@@ -19,7 +19,7 @@ public class JavaReflection {
         }
     }
 
-    protected <T> void setterField(T tclass, String nameField, Object value) throws ExcelException {
+    public <T> void setterField(T tclass, String nameField, Object value) throws ExcelException {
         PropertyDescriptor pd = null;
         try {
             pd = new PropertyDescriptor(nameField, tclass.getClass());
