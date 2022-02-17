@@ -18,7 +18,7 @@
         <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
         <!-- -->
         <lombok.version>1.18.22</lombok.version>
-        <apache.poi.version>5.0.0</apache.poi.version>
+        <apache.poi.version>4.1.2</apache.poi.version>
         <assertj.version>3.18.1</assertj.version>
         <mockito.version>3.12.4</mockito.version>
         <junit-jupiter.version>5.8.2</junit-jupiter.version>
@@ -30,6 +30,7 @@
         <jacoco-maven-plugin.line.minimum>0.70</jacoco-maven-plugin.line.minimum>
         <jacoco-maven-plugin.branch.minimum>0.70</jacoco-maven-plugin.branch.minimum>
         <slf4j-api.version>1.7.25</slf4j-api.version>
+        <log4j.version>2.17.0</log4j.version>
     </properties>
     <dependencies>
         <dependency>
@@ -69,11 +70,7 @@
             <artifactId>commons-collections4</artifactId>
             <version>${commons-collections4.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-jdk14</artifactId>
-            <version>${slf4j-api.version}</version>
-        </dependency>
+
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
@@ -84,6 +81,63 @@
             <artifactId>poi-ooxml</artifactId>
             <version>${apache.poi.version}</version>
         </dependency>
+
+        <!-- -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId><!-- log4j2 implementation-->
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-jcl</artifactId><!-- bridge to commons-logging-->
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId><!-- bridge to slf4j-->
+            <version>${log4j.version}</version>
+        </dependency>
+        <!--
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>${slf4j-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.32</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-api</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        -->
+
     </dependencies>
     <build>
         <plugins>
