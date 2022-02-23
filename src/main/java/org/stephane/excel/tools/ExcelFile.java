@@ -11,17 +11,17 @@ import java.io.IOException;
 
 @Slf4j
 public class ExcelFile {
-    private ExcelFile() {
-    }
-
     @Getter
     private static Workbook workbook;
+
+    private ExcelFile() {
+    }
 
     public static Workbook readXls(String excelFile) throws ExcelException {
         try {
             File excelFile1 = new File(excelFile);
             if (!excelFile1.exists()) {
-
+                log.warn("File {} not found !!", excelFile);
                 workbook = WorkbookFactory.create(false);
 
             } else {

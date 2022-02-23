@@ -79,10 +79,27 @@ public class ExcelToEntity extends ExcelRow {
         return excelDataHeader.rowNumber();
     }
 
-    private Sheet getSheetSelected(ExcelSheet excelSheet, Workbook workbook) {
-        if (Objects.isNull(excelSheet) || excelSheet.name().isBlank())
-            return workbook.getSheetAt(0);
+    private Sheet getSheetSelected(ExcelSheet excelSheet, Workbook workbook) throws ExcelException {
+        if (Objects.isNull(excelSheet) || excelSheet.name().isBlank()) {
+            return getSheetAt(workbook);
+        }
 
-        return workbook.getSheet(excelSheet.name());
+        return getSheetWithName(excelSheet, workbook);
+    }
+
+    private Sheet getSheetAt(Workbook workbook) throws ExcelException {
+        Sheet sheetAt = workbook.getSheetAt(0);
+        if (Objects.isNull(sheetAt)) {
+            throw new ExcelException("Excel Sheet not found !!");
+        }
+        return sheetAt;
+    }
+
+    private Sheet getSheetWithName (ExcelSheet excelSheet, Workbook workbook) throws ExcelException {
+        Sheet sheet = workbook.getSheet(excelSheet.name());
+        if (Objects.isNull(sheet)) {
+            throw new ExcelException("Excel Sheet not found !!");
+        }
+        return sheet;
     }
 }

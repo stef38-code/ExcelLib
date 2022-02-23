@@ -13,14 +13,14 @@ import org.stephane.excel.annotations.ExcelSheet;
 public class Personne {
     @ExcelCell
     private String name;
-    @ExcelCell(number =1)
+    @ExcelCell(number = 1)
     private String company;
-    @ExcelCell(number =2)
+    @ExcelCell(number = 2)
     private String address;
-    @ExcelCell(number =3, stringFormat = true)
+    @ExcelCell(number = 3, stringFormat = true)
     private String postalZip;
-    @ExcelCell(number =4)
+    @ExcelCell(number = 4)
     private String city;
-    @ExcelCell(number =5)
+    @ExcelCell(number = 5)
     private String guid;
 }
