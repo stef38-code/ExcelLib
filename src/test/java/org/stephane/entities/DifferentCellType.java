@@ -8,7 +8,7 @@ import org.stephane.excel.annotations.ExcelSheet;
 
 import java.util.Date;
 
-@ExcelSheet(name = "Feuil1")
+@ExcelSheet(name = "Feuille1")
 @ExcelDataHeader(rowNumber = 0)
 @Getter
 @Setter
@@ -22,9 +22,9 @@ public class DifferentCellType {
     @ExcelCell(number =3)
     private String error;
     @ExcelCell(number =4)
-    private String blank;
-    @ExcelCell(number =5)
     private String formula;
-    @ExcelCell(number =6)
+    @ExcelCell(number =5)
     private boolean aBoolean;
+    @ExcelCell(number =6)
+    private String blank;
 }

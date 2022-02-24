@@ -27,8 +27,8 @@ public class FieldEntity extends JavaReflection {
 
     private <T> void setterFieldEntity(Row row, T entity, Field field, int number, Cell cell) throws ExcelException {
         if (!Objects.isNull(cell)) {
-            log.debug("field name: {} cellule: [{},{}] value {}", field.getName(), row.getRowNum(), number, CellTools.returnStringValue(cell));
-            setterField(entity, field.getName(), CellTools.getValue(field.getAnnotation(ExcelCell.class), cell));
+            log.debug("field name: {} cellule: [{},{}]", field.getName(), row.getRowNum(), number);
+            setterField(entity, field.getName(), CellTools.getValue(row,field.getAnnotation(ExcelCell.class), cell));
         } else {
             log.warn("Cell NULL field name: {} cellule: [{},{}]", field.getName(), row.getRowNum(), number);
         }

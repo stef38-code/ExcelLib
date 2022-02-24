@@ -8,4 +8,5 @@ import java.lang.annotation.*;
 public @interface ExcelCell {
     int number() default 0;
     boolean stringFormat() default false;
+    boolean evaluateFormula() default false;
 }
