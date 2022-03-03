@@ -15,7 +15,7 @@ public class Chien {
     @ExcelCell
     private String ref;
     // Animal_Name
-    @ExcelCell(number =1)
+    @ExcelCell(columnName = "Animal_Name")
     private String nomAnimal;
     // Breed_Description
     @ExcelCell(number =2)

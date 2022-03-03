@@ -2,8 +2,11 @@ package org.stephane.excel.parser;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.stephane.excel.annotations.ExcelCell;
 import org.stephane.excel.annotations.ExcelDataHeader;
 import org.stephane.excel.annotations.ExcelSheet;
 import org.stephane.excel.business.AnalyseClass;
@@ -64,11 +67,28 @@ public class ExcelToEntity extends ExcelRow {
 
     private <T> List<T> createListEntities(Class<T> tclass, EntityDefinition entityDefinition, Sheet sheetSelected, int numberDataHeader) throws ExcelException {
         List<Field> fields = entityDefinition.getFields();
+        //Dans le cas des nons des colonnes
+        for (Field field : fields) {
+            String columnName = field.getAnnotation(ExcelCell.class).columnName();
+            if(StringUtils.isNoneEmpty(columnName)){
+                //recherche du numero de la colonne depuis le nom
+                log.info("{} -> {}",field.getName(),columnName);
+                Row row = sheetSelected.getRow(numberDataHeader);
+                int columnID = findNumberColumn(row,columnName);
+                ExcelCell annotation = field.getAnnotation(ExcelCell.class);
+                //TODO revoir cette partie
+            }
+        }
+        //
         List<T> entities = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(fields)) {
             readRowOneByOne(sheetSelected.rowIterator(), fields, entities, tclass, numberDataHeader);
         }
         return entities;
+    }
+
+    private int findNumberColumn(Row row, String columnName) {
+        return 0;
     }
 
 
